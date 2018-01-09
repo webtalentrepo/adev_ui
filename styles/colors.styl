@@ -1,0 +1,47 @@
+@require "./mixins";
+
+ui-option('colors.white', #ffffff)
+ui-option('colors.black', #10161a)
+
+ui-option('colors.dark-gray', #182026 #202b33 #293742 #30404d #394b59)
+ui-option('colors.gray', #5c7080 #738694 #8a9ba8 #a7b6c2 #bfccd6)
+ui-option('colors.light-gray', #ced9e0 #d8e1e8 #e1e8ed #ebf1f5 #f5f8fa)
+
+ui-option('colors.blue', #0e5a8a #106ba3 #137cbd #2b95d6 #48aff0)
+ui-option('colors.green', #0a6640 #0d8050 #0f9960 #15b371 #3dcc91)
+ui-option('colors.orange', #a66321 #bf7326 #d9822b #f29d49 #ffb366)
+ui-option('colors.red', #a82a2a #c23030 #db3737 #f55656 #ff7373)
+
+ui-option('colors.vermilion', #9e2b0e #b83211 #d13913 #eb532d #ff6e4a)
+ui-option('colors.rose', #a82255 #c22762 #db2c6f #f5498b #ff66a1)
+ui-option('colors.violet', #5c255c #752f75 #8f398f #a854a8 #c274c2)
+ui-option('colors.indigo', #5642a6 #634dbf #7157d9 #9179f2 #ad99ff)
+ui-option('colors.cobalt', #1f4b99 #2458b3 #2965cc #4580e6 #669eff)
+ui-option('colors.turquoise', #008075 #00998c #00b3a4 #14ccbd #2ee6d6)
+ui-option('colors.forest', #1d7324 #238c2c #29a634 #43bf4d #62d96b)
+ui-option('colors.lime', #728c23 #87a629 #9bbf30 #b6d94c #d1f26d)
+ui-option('colors.gold', #a67908 #bf8c0a #d99e0b #f2b824 #ffc940)
+ui-option('colors.sepia', #63411e #7d5125 #96622d #b07b46 #c99765)
+
+ui-option('colors.intent.primary', ui-options.colors.blue[2])
+ui-option('colors.intent.success', ui-options.colors.green[2])
+ui-option('colors.intent.warning', ui-options.colors.orange[2])
+ui-option('colors.intent.danger', ui-options.colors.red[2])
+
+ui-option('colors.background.app', ui-options.colors.light-gray[4])
+ui-option('colors.background.code', rgba(ui-options.colors.white[0], .7))
+
+ui-option('colors.text.default', ui-options.colors.dark-gray[0])
+ui-option('colors.text.muted', ui-options.colors.gray[0])
+ui-option('colors.text.disabled', rgba(ui-options.colors.text.muted, .5))
+ui-option('colors.text.heading', ui-options.colors.text.default)
+ui-option('colors.text.link', ui-options.colors.blue[1])
+ui-option('colors.text.code', ui-options.colors.text.muted)
+ui-option('colors.text.selection', rgba(125, 188, 255, 0.6))
+
+ui-option('colors.icon.default', ui-options.colors.text.muted)
+ui-option('colors.icon.hover', ui-options.colors.text.default)
+ui-option('colors.icon.disabled', ui-options.colors.text.disabled)
+ui-option('colors.icon.selected', ui-options.colors.intent.primary)
+
+ui-option('colors.divider', rgba(ui-options.colors.black, 0.15))

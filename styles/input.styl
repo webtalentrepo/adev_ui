@@ -1,0 +1,124 @@
+// ui-input() {
+//   @include pt-input();
+
+//   &.pt-large {
+//     @include pt-input-large();
+//   }
+
+//   &.pt-fill {
+//     width: 100%;
+//   }
+
+//   .pt-dark & {
+//     @include pt-dark-input();
+//   }
+
+//   @each $intent, $color in $pt-intent-colors {
+//     &.pt-intent-#{$intent} {
+//       @include pt-input-intent($color);
+
+//       .pt-dark & {
+//         @include pt-dark-input-intent($color);
+//       }
+//     }
+//   }
+
+//   &::-ms-clear {
+//     display: none;
+//   }
+// }
+
+ui-option('input.padding-horizontal', ui-options.grid.size)
+ui-option('input.height.default', ui-options.grid.size * 3)
+ui-option('input.height.large', ui-options.grid.size * 4)
+
+ui-option('input.button.height.default', ui-options.button.height.default - 6px)
+ui-option('input.button.height.large', ui-options.button.height.default)
+
+ui-option('input.font-weight', 400)
+
+ui-option('input.transition', box-shadow ui-options.transition.duration ui-options.transition.curve.ease)
+
+ui-option('input.color.default', ui-options.colors.text.default)
+ui-option('input.color.disabled', ui-options.button.color.disabled)
+ui-option('input.color.placeholder', ui-options.colors.text.disabled)
+
+ui-option('input.background-color.default', ui-options.colors.white[0])
+ui-option('input.background-color.disabled', rgba(ui-options.colors.light-gray[0], .5))
+
+ui-option('input.shadow-color.focus', rgba(ui-options.colors.intent.primary))
+ui-option('input.box-shadow.focus', inset 0 1px 1px rgba(ui-options.colors.black[0], ui-options.shadow.drop.opacity))
+ui-option('input.box-shadow.default', inset border-shadow(0.15),
+                                      inset 0 1px 1px rgba(ui-options.colors.black[0], ui-options.shadow.drop.opacity))
+
+ui-input($size='default') {
+  outline: none;
+  border: none;
+  border-radius: ui-options.border-radius
+  box-shadow: border-shadow(0, ui-options.input.shadow-color.focus, 0),
+              border-shadow(0, ui-options.input.shadow-color.focus, 0),
+              ui-options.input.box-shadow.default;
+  background: ui-options.input.background-color.default
+  height: ui-options.input.height[$size]
+  padding: 0 ui-options.input.padding-horizontal;
+  vertical-align: middle;
+  line-height: ui-options.input.height[$size]
+  color: ui-options.input.color.default
+  font-size: ui-options.font.size[$size]
+  font-weight: ui-options.input.font-weight
+  transition: ui-options.input.transition;
+
+  &::placeholder {
+    opacity: 1;
+    color: ui-options.input.color.placeholder
+  }
+
+  &:focus {
+    box-shadow: border-shadow(1, ui-options.input.shadow-color.focus, 1px),
+                border-shadow(0.3, ui-options.input.shadow-color.focus, 3px),
+                ui-options.input.box-shadow.focus;
+  }
+
+  &[type="search"],
+  &.round {
+    border-radius: ui-options.input.height[$size]
+    box-sizing: border-box
+    padding-left: ui-options.grid.size
+    if($size == 'large') {
+      padding: 0 ui-options.input.padding-horizontal * 1.5;
+    }
+  }
+
+  &[readonly] {
+    box-shadow: inset 0 0 0 1px ui-options.colors.divider
+  }
+
+  &:disabled,
+  &.disabled {
+    box-shadow: none;
+    background: ui-options.input.background-color.disabled;
+    cursor: not-allowed;
+    color: ui-options.input.color.disabled;
+    resize: none;
+  }
+}
+
+
+ui-input-group($input-class = 'input') {
+  display: block;
+  position: relative;
+
+  {$input-class}{
+    position: relative;
+    width: 100%;
+    &:not(:first-child) { padding-left: ui-options.input.height.default }
+    &:not(:last-child)  { padding-right: ui-options.input.height.default }
+  }
+}
+
+
+focus-outline() {
+  outline: rgba(ui-options.colors.blue[2], 0.5) auto 2px;
+  outline-offset: 2px;
+  -moz-outline-radius: 6px;
+}

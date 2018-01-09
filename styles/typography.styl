@@ -1,0 +1,226 @@
+@require "./variables";
+@require "./mixins";
+
+hr {
+  margin: (ui-grid-size * 2) 0;
+  border: none;
+  border-bottom: 1px solid ui-divider-black
+
+  .ui-dark & {
+    border-color: ui-dark-divider-white;
+  }
+}
+
+::selection {
+  background: ui-text-selection-color;
+}
+
+
+body {
+  base-typography();
+  color: ui-text-color;
+}
+
+small {
+  font-size: ui-font-size-small;
+}
+
+.monospace-text {
+  monospace-typography();
+}
+
+$headers := {
+  "h1": (40px 0.8em),
+  "h2": (27px 0.8em),
+  "h3": (24px 0.8em),
+  "h4": (20px 0.9em),
+  "h5": (17px 0.9em),
+  "h6": (15px 0.9em)
+}
+
+for $header, $props in $headers {
+    {$header} {
+        header-typography();
+        margin: 0 0 ui-grid-size;
+        padding: 0;
+        line-height: $props[1]
+        font-size: $props[0]
+    }
+}
+
+.ui-text {
+  base-typography()
+}
+
+.ui-text-large {
+  line-height: 1.25;
+  font-size: ui-font-size-large;
+}
+
+.running-text {
+  running-typography();
+  for $header, $props in $headers {
+    {$header} {
+      margin-top: ui-grid-size * 4;
+      margin-bottom: ui-grid-size * 2;
+    }
+  }
+}
+
+.running-text-small {
+  running-typography-small();
+}
+
+p {
+  margin: 0 0 ui-grid-size;
+  padding: 0;
+}
+
+a {
+  text-decoration: none;
+  color: ui-link-color;
+
+  &:hover {
+    cursor: pointer;
+    text-decoration: underline;
+    color: ui-link-color;
+  }
+
+  code,
+  .ui-dark & code {
+    color: inherit;
+  }
+
+  .ui-dark &,
+  .ui-dark &:hover {
+    color: ui-dark-link-color;
+  }
+}
+
+pre,
+code {
+   monospace-typography();
+}
+
+code {
+  border-radius: ui-border-radius;
+  box-shadow: inset border-shadow(0.2);
+  background: ui-code-background-color;
+  padding: 2px 5px;
+  color: ui-code-text-color;
+
+  .ui-dark & {
+    box-shadow: inset border-shadow(0.4);
+    background: ui-dark-code-background-color;
+    color: ui-dark-code-text-color;
+  }
+}
+
+pre {
+  display: block;
+  margin: ui-grid-size 0;
+  border-radius: ui-border-radius;
+  box-shadow: inset 0 0 0 1px ui-divider-black;
+  background: ui-code-background-color;
+  padding: (ui-grid-size * 1.3) (ui-grid-size * 1.5) (ui-grid-size * 1.2);
+  line-height: 1.4;
+  color: ui-text-color;
+  font-size: ui-font-size - 1px;
+  word-break: break-all;
+  word-wrap: break-word;
+
+  > code {
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
+    padding: 0;
+    white-space: pre-wrap;
+    color: inherit;
+    font-size: inherit;
+  }
+
+  .ui-dark & {
+    box-shadow: inset 0 0 0 1px ui-dark-divider-black;
+    background: ui-dark-code-background-color;
+    color: ui-dark-text-color;
+
+    > code {
+      box-shadow: none;
+      background: transparent;
+    }
+  }
+}
+
+blockquote {
+  running-typography();
+  margin: 0 0 ui-grid-size;
+  border-left: solid 4px rgba($gray[3], 0.5);
+  padding: 0 (ui-grid-size * 2);
+
+  p:last-child {
+    margin-bottom: 0;
+  }
+
+  .ui-dark & {
+    border-color: rgba($gray[1], 0.5);
+  }
+}
+
+ol,
+ul {
+  margin: ui-grid-size 0;
+  padding-left: ui-grid-size * 4;
+}
+
+.list,
+.running-text ul,
+.running-text ol {
+  li:not(:last-child) {
+    padding-bottom: (ui-grid-size / 2);
+  }
+
+  li:last-child {
+    margin-bottom: 0;
+  }
+
+  ol,
+  ul {
+    margin-top: (ui-grid-size / 2);
+  }
+}
+
+.list-unstyled {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+
+  li {
+    padding: 0;
+  }
+}
+
+.ui-text-muted {
+  color: ui-text-color-muted;
+
+  .ui-dark & {
+    color: ui-dark-text-color-muted;
+  }
+}
+
+.ui-text-overflow-ellipsis {
+  overflow-ellipsis();
+}
+
+.ui-rtl {
+  text-align: right;
+}
+
+.ui-dark {
+  color: ui-dark-text-color;
+
+  for $header, $props in $headers {
+    {$header} {
+       color: ui-dark-heading-color;
+    }
+  }
+}

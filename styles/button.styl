@@ -1,0 +1,153 @@
+@import "./colors"
+@import "./variables"
+
+
+ui-option('colors.white-transparent', rgba(ui-options.colors.white, 0))
+
+ui-option('button.height.default', ui-options.grid.size * 3)
+ui-option('button.height.large',  ui-options.grid.size * 4)
+
+ui-option('button.border-width', 1px)
+ui-option('button.padding.default', 0 ui-options.grid.size)
+ui-option('button.padding.large', 0 ui-options.grid.size * 1.5)
+ui-option('button.icon.spacing.default', (ui-options.button.height.default - ui-options.icon.size.standard) / 2)
+ui-option('button.icon.spacing.large', (ui-options.button.height.large - ui-options.icon.size.large) / 2)
+
+ui-option('button.box-shadow.default', inset 0 0 0 ui-options.button.border-width rgba(ui-options.colors.black[0], 0.2),
+                                       inset 0 (ui-options.button.border-width) 0 rgba(ui-options.colors.black[0], 0.1))
+
+ui-option('button.box-shadow.active', inset 0 0 0 ui-options.button.border-width rgba(ui-options.colors.black[0], 0.2),
+                                      inset 0 1px 2px rgba(ui-options.colors.black[0], 0.2))
+
+ui-option('button.box-shadow.intent.default', inset 0 0 0 ui-options.button.border-width rgba(ui-options.colors.black[0], 0.4),
+                                              inset 0 (ui-options.button.border-width) 0 rgba(ui-options.colors.black[0], 0.2))
+
+ui-option('button.box-shadow.intent.active', inset 0 0 0 ui-options.button.border-width rgba(ui-options.colors.black[0], 0.4),
+                                             inset 0 1px 2px rgba(ui-options.colors.black[0], 0.2))
+
+ui-option('button.box-shadow.overlay.default', 0 0 0 ui-options.button.border-width rgba(ui-options.colors.black[0], 0.2),
+                                               0 1px 1px rgba(ui-options.colors.black[0], 0.2))
+
+ui-option('button.box-shadow.overlay.active', 0 0 0 ui-options.button.border-width rgba(ui-options.colors.black[0], 0.2),
+                                              inset 0 1px 1px rgba(ui-options.colors.black[0], 0.1))
+
+ui-option('button.color.disabled', ui-options.colors.text.disabled)
+ui-option('button.color.intent-disabled', rgba(ui-options.colors.white, .6))
+
+ui-option('button.background-color.default', ui-options.colors.light-gray[4])
+ui-option('button.background-color.hover', ui-options.colors.light-gray[3])
+ui-option('button.background-color.active', ui-options.colors.light-gray[1])
+ui-option('button.background-color.disabled', rgba(ui-options.colors.light-gray[0], .5))
+ui-option('button.background-color.active-disabled', rgba(ui-options.colors.light-gray[0], .7))
+
+
+ui-option('minimal-button.background-color.default', none)
+ui-option('minimal-button.background-color.hover', rgba(ui-options.colors.gray[3], 0.3))
+ui-option('minimal-button.background-color.active', rgba(ui-options.colors.gray[2], 0.3))
+
+ui-button($height = ui-options.button.height.default) {
+  display: inline-block
+  border: none
+  border-radius: ui-options.border-radius
+  cursor: pointer
+  padding: ui-options.button.padding.default
+  vertical-align: middle
+  font-size: ui-options.font.size.default
+
+  min-width: $height;
+  min-height: $height;
+  line-height: $height;
+
+  background-color: ui-options.button.background-color.default
+  background-image: linear-gradient(to bottom, ui-options.colors.white[0], ui-options.colors.white-transparent[0])
+  box-shadow: ui-options.button.box-shadow.default;
+  color: ui-options.colors.text.default;
+
+  &:hover {
+    background-color: ui-options.button.background-color.hover
+    background-image: linear-gradient(to bottom, rgba(ui-options.colors.white[0], .5), ui-options.colors.white-transparent[0])
+    background-clip: padding-box
+  }
+
+  &:active,
+  &.active {
+    box-shadow: ui-options.button.box-shadow.active;
+    background-color: ui-options.button.background-color.active;
+    background-image: none;
+  }
+
+  &:disabled,
+  &.disabled {
+    outline: none;
+    box-shadow: none;
+    background-color: ui-options.button.background-color.disabled;
+    background-image: none;
+    cursor: not-allowed;
+    color: ui-options.button.color.disabled;
+    &.active {
+      background: ui-options.button.background-color.active-disabled;
+    }
+  }
+}
+
+
+button-group($button-class = 'button') {
+  display: inline-flex;
+
+  .{$button-class} {
+    flex: 0 0 auto;
+    position: relative;
+    z-index: ui-depth("button-default");
+
+    &:not(:first-child) {
+      border-top-left-radius: 0;
+      border-bottom-left-radius: 0;
+    }
+
+    &:not(:last-child) {
+      margin-right: -(ui-options.button.border-width);
+      border-top-right-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &:focus {
+      z-index: ui-depth("button-focus");
+    }
+
+    &:hover {
+      z-index: ui-depth("button-hover");
+    }
+
+    &:active,
+    &.active {
+      z-index: ui-depth("button-active");
+    }
+
+    &:disabled,
+    &.disabled {
+      z-index: ui-depth("button-disabled");
+    }
+
+    &[class*="intent-"] {
+      z-index: ui-depth("intent-button-default");
+
+      &:focus {
+        z-index: ui-depth("intent-button-focus");
+      }
+
+      &:hover {
+        z-index: ui-depth("intent-button-hover");
+      }
+
+      &:active,
+      &.active {
+        z-index: ui-depth("intent-button-active");
+      }
+
+      &:disabled,
+      &.disabled {
+        z-index: ui-depth("intent-button-disabled");
+      }
+    }
+  }
+}

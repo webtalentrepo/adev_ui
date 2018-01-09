@@ -1,0 +1,120 @@
+@import "./colors";
+@require "./mixins";
+
+ui-option('grid.size', 10px)
+ui-option('icon.size.standard', 16px)
+ui-option('icon.size.large', 20px)
+
+ui-option('font.family.default', -apple-system,
+                                 "BlinkMacSystemFont",
+                                 "Segoe UI",
+                                 "Roboto",
+                                 "Oxygen",
+                                 "Ubuntu",
+                                 "Cantarell",
+                                 "Open Sans",
+                                 "Helvetica Neue",
+                                 sans-serif)
+ui-option('font.family.monospace',  monospace)
+
+ui-option('font.size.default', ui-options.grid.size * 1.4)
+ui-option('font.size.large', ui-options.grid.size * 1.6)
+ui-option('font.size.small', ui-options.grid.size * 1.2)
+ui-option('font.line-height', remove-unit((ui-options.grid.size * 1.8) / ui-options.font.size.default) + 0.0001)
+
+ui-option('border-radius', ui-options.grid.size / 3)
+
+ui-option('transition.curve.ease', cubic-bezier(0.4, 1, 0.75, 0.9))
+ui-option('transition.curve.ease-bounce', cubic-bezier(0.54, 1.12, 0.38, 1.11))
+ui-option('transition.duration', 100ms)
+
+ui-option('control-group-stack',
+  "input-disabled",
+  "input-default",
+  "button-disabled",
+  "button-default",
+  "button-focus",
+  "button-hover",
+  "button-active",
+  "intent-button-disabled",
+  "intent-button-default",
+  "intent-button-focus",
+  "intent-button-hover",
+  "intent-button-active",
+  "intent-input-default",
+  "input-focus",
+  "intent-input-focus",
+  "input-group-children",
+  "select-caret"
+)
+
+ui-depth($name){
+  return index(ui-options.control-group-stack, $name) || 0
+}
+
+
+// // Others
+// ui-navbar-height := ui-grid-size * 5
+
+// // Z-indices
+// ui-z-index-base := 0
+// ui-z-index-content := ui-z-index-base + 10
+// ui-z-index-overlay := ui-z-index-content + 10
+
+
+ui-option("shadow.border.opacity", .1)
+ui-option("shadow.drop.opacity", .2)
+// // // Elevations
+// ui-elevation-shadow-levels := {}
+// ui-elevation-shadow-levels['0'] = 0 0 0 1px ui-divider-black
+// ui-elevation-shadow-levels['1'] = border-shadow(ui-border-shadow-opacity),
+//                                   0 1px 1px rgba($black, ui-drop-shadow-opacity)
+// ui-elevation-shadow-levels['2'] = border-shadow(ui-border-shadow-opacity),
+//                                   0 1px 1px rgba($black, ui-drop-shadow-opacity),
+//                                   0 2px 6px rgba($black, ui-drop-shadow-opacity)
+// ui-elevation-shadow-levels['3'] = border-shadow(ui-border-shadow-opacity),
+//                                   0 2px 4px rgba($black, ui-drop-shadow-opacity),
+//                                   0 8px 24px rgba($black, ui-drop-shadow-opacity)
+// ui-elevation-shadow-levels['4'] = border-shadow(ui-border-shadow-opacity),
+//                                   0 4px 8px rgba($black, ui-drop-shadow-opacity),
+//                                   0 18px 46px 6px rgba($black, ui-drop-shadow-opacity)
+
+// ui-elevation-shadow(level = 0) {
+//     return ui-elevation-shadow-levels[s('%s', level)]
+// }
+
+// ui-dark-elevation-shadow-levels := {}
+// ui-dark-elevation-shadow-levels['0'] = 0 0 0 1px ui-dark-divider-black
+// ui-dark-elevation-shadow-levels['1'] = border-shadow(ui-dark-border-shadow-opacity), 0 1px 1px rgba($black, ui-dark-drop-shadow-opacity)
+// ui-dark-elevation-shadow-levels['2'] = border-shadow(ui-dark-border-shadow-opacity),
+//                                   0 1px 1px rgba($black, ui-dark-drop-shadow-opacity),
+//                                   0 2px 6px rgba($black, ui-dark-drop-shadow-opacity)
+// ui-dark-elevation-shadow-levels['3'] = border-shadow(ui-dark-border-shadow-opacity),
+//                                   0 2px 4px rgba($black, ui-dark-drop-shadow-opacity),
+//                                   0 8px 24px rgba($black, ui-dark-drop-shadow-opacity)
+// ui-dark-elevation-shadow-levels['4'] = border-shadow(ui-dark-border-shadow-opacity),
+//                                   0 4px 8px rgba($black, ui-dark-drop-shadow-opacity),
+//                                   0 18px 46px 6px rgba($black, ui-dark-drop-shadow-opacity)
+
+
+// ui-dark-elevation-shadow(level = 0) {
+//     return ui-elevation-shadow-levels[s('%s', level)]
+// }
+
+
+
+
+// ui-input-box-shadow := inset border-shadow(0.15),
+//                        inset 0 1px 1px rgba($black, ui-drop-shadow-opacity)
+
+// ui-dialog-box-shadow := ui-elevation-shadow(4)
+// ui-popover-box-shadow := ui-elevation-shadow(3)
+// ui-tooltip-box-shadow := ui-popover-box-shadow
+
+// ui-dark-input-box-shadow := inset border-shadow(0.3),
+//                             inset 0 1px 1px rgba($black, ui-dark-drop-shadow-opacity)
+
+// ui-dark-dialog-box-shadow := ui-dark-elevation-shadow(4)
+// ui-dark-popover-box-shadow := ui-dark-elevation-shadow(3)
+// ui-dark-tooltip-box-shadow := ui-dark-popover-box-shadow
+

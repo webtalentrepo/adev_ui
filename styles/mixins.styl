@@ -1,0 +1,61 @@
+use('./plugins/ui-options.js')
+base-typography() {
+  text-transform: none;
+  line-height: ui-line-height;
+  letter-spacing: 0;
+  font-family: ui-font-family;
+  font-size: ui-font-size;
+  font-weight: 400;
+}
+
+running-typography() {
+  line-height: 1.5;
+  font-size: ui-font-size-large;
+}
+
+running-typography-small() {
+  line-height: 1.5;
+  font-size: ui-font-size;
+}
+
+header-typography() {
+  color: ui-heading-color;
+  font-weight: 600;
+}
+
+monospace-typography() {
+  text-transform: none;
+  font-family: ui-font-family-monospace;
+  font-size: smaller;
+}
+
+overflow-ellipsis() {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  word-wrap: normal;
+}
+
+focus-outline() {
+  outline: rgba($blue[2], 0.5) auto 2px;
+  outline-offset: 2px;
+  -moz-outline-radius: 6px;
+}
+
+border-shadow($alpha, $color = ui-options.colors.black[0], $size = 1px) {
+  return 0 0 0 $size rgba($color, $alpha);
+}
+
+var($variable){
+    return unquote('var(%s)' % unquote($variable))
+}
+
+calc($expression, $values...) {
+    $parts = match('%s', $expression, 'gi')
+    if($parts != null && length($parts) != length($values)) {
+        error('missing calc() parameters')
+    }
+    return s('calc(%s)', unquote($expression % $values))
+}
+
+ui-options := {}

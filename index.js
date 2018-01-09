@@ -1,0 +1,8 @@
+export { default as Slider } from './components/Slider.vue'
+export { default as NumericInput } from './components/NumericInput.vue'
+export { default as Select } from './components/Select.vue'
+export { default as LoadingOverlay } from './components/LoadingOverlay.vue'
+export { default as Accordion } from './components/Accordion.vue'
+export { default as Modal } from './components/Modal.vue'
+export { default as Pagination } from './components/Pagination.vue'
+export { default as Dialog } from './components/Dialog.vue'
