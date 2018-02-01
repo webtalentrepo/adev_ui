@@ -39,6 +39,8 @@ references
 # Output of 'npm pack'
 *.tgz
 
+### PhpStorm/JetBrains ###
+.idea/
 
 ### VisualStudioCode ###
 .vscode/*

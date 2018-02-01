@@ -66,6 +66,12 @@ export default {
 
   beforeDestroy() {
     hide(this);
+  },
+
+  destroyed() {
+    if (ModalsContainer.contains(this.$el)) {
+      ModalsContainer.removeChild(this.$el);
+    }
   }
 };
 </script>

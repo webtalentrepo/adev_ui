@@ -1,51 +1,62 @@
 <template>
-  <click-outside :handler="onClickOutside">
-    <div class="ui-select"
-         tabindex="0">
-      <button class="ui-button"
-              @click="showOptions = !showOptions">{{selectedLabel ? selectedLabel : placeholder}}</button>
-      <div v-if="showOptions"
-           class="ui-menu ui-elevation-4">
-        <label class="ui-label"
-               v-if="options.length > 5">
-          <input class="ui-input"
-                 v-model="filter"
-                 type="text">
-        </label>
-        <ul>
-          <template v-if="filteredOptions.length > 0">
-            <li class="ui-menu-item"
-                :key="option.index"
-                :class="{'ui-active': option.index == selected}"
-                @click="selectOption(option.index)"
-                :data-i="option.index"
-                v-for="option in filteredOptions">{{option.label}}</li>
-          </template>
-          <li class="ui-disabled ui-menu-item"
-              v-else>No options</li>
-        </ul>
-      </div>
+  <div class="ui-select">
+    <button class="ui-button"
+            @blur="onBlur"
+            :tabindex="showOptions ? -1 : 0"
+            @mousedown.prevent="showOptions = !showOptions"
+            @focus="showOptions = true">{{selectedLabel ? selectedLabel : placeholder}}</button>
+    <div v-if="showOptions"
+         class="ui-menu ui-elevation-4">
+      <label class="ui-label"
+             :class="{unsearchable: !isSearchable}">
+        <input class="ui-input"
+               v-model="filter"
+               type="text"
+               :readonly="!isSearchable"
+               @blur="onBlur"
+               @keydown.up.prevent="upKey"
+               @keydown.down.prevent="downKey"
+               @keyup.enter="selectOption(highlighted)"
+               @keyup.esc="showOptions = false"
+               @mousedown.stop>
+      </label>
+      <ul>
+        <template v-if="filteredOptions.length > 0">
+          <li class="ui-menu-item"
+              :key="option.index"
+              :class="{'ui-active': option.index === highlighted}"
+              @mousedown.prevent="selectOption(option.index)"
+              :data-i="option.index"
+              v-for="option in filteredOptions">{{option.label}}</li>
+        </template>
+        <li class="ui-disabled ui-menu-item"
+            v-else>No options</li>
+      </ul>
     </div>
-  </click-outside>
+  </div>
 </template>
 
 <script>
-import ClickOutside from './common/click-outside.js'
 export default {
   name: 'Select',
-  components: {
-    ClickOutside
-  },
   props: {
-    'placeholder': {
+    placeholder: {
       type: String,
       default: ''
     },
-    'select': {
+    select: {
       type: String
     },
-    'selectValue': {
+    selectValue: {
       default: -1
+    },
+    updateOnHighlight: {
+      type: Boolean,
+      default: false
+    },
+    searchable: {
+      type: Boolean,
+      default: true
     }
   },
 
@@ -59,30 +70,93 @@ export default {
     filter: '',
     selected: -1,
     showOptions: false,
+    highlighted: -1
   }),
 
   computed: {
     filteredOptions() {
-      return this.filter == '' ? this.options : this.options.filter((option) => option.label.indexOf(this.filter) > -1)
+      let options = this.filter == '' ?
+        this.options :
+        this.options
+        .filter(option =>
+          option.label.toLowerCase().includes(this.filter.toLowerCase())
+        );
+      return options.map(option => {
+        option.index = options.findIndex(opt => opt === option)
+        return option;
+      });
     },
     selectedLabel() {
-      return this.selected == -1 ? this.placeholder : this.options[this.selected].label
+      return this.selected == -1 ?
+        this.placeholder :
+        this.options[this.selected].label;
     },
     selectedValue() {
-      return this.selected == -1 ? null : this.options[this.selected].value
+      return this.selected == -1 ? null : this.filteredOptions[this.selected].value;
+    },
+    isSearchable() {
+      return this.options.length > 5 && this.searchable;
     }
   },
 
   methods: {
-    selectOption(index) {
-      this.selected = index
-      this.$emit('change', this.selectedValue)
+    selectOption(index, show = false) {
+      this.selected = index;
+      this.highlighted = index;
+      this.$emit('change', this.selectedValue);
+      this.showOptions = show;
     },
-    onClickOutside(e) {
-      this.showOptions = false
+    onBlur() {
+      this.$nextTick(() => {
+        this.showOptions = this.$el.contains(document.activeElement);
+      });
+    },
+    downKey() {
+      let option = this.filteredOptions.find(
+        option => parseInt(option.index) === parseInt(this.highlighted) + 1
+      );
+      if (!option) {
+        option = this.filteredOptions[0];
+      }
+      this.highlight(option);
+    },
+    upKey() {
+      let option = this.filteredOptions.find(
+        option => parseInt(option.index) === parseInt(this.highlighted) - 1
+      );
+      if (!option) {
+        option = this.filteredOptions[this.filteredOptions.length - 1];
+      }
+      this.highlight(option);
+    },
+    highlight(option) {
+      if (this.updateOnHighlight) {
+        this.selectOption(option.index, true);
+      } else {
+        this.highlighted = option.index;
+      }
+      this.maybeAdjustScroll();
+    },
+    maybeAdjustScroll() {
+      this.$nextTick(() => {
+        let list = this.$el.querySelector('ul');
+        if (list.scrollHeight > list.clientHeight) {
+          this.$el
+            .querySelector('li.ui-active')
+            .scrollIntoView({ block: 'nearest' });
+        }
+      });
     }
   },
-  watch : {
+  watch: {
+    showOptions(value) {
+      if (!value) {
+        return this.$emit('blur');
+      }
+      this.$nextTick(() => {
+        this.$el.querySelector('input').focus();
+      });
+    },
     select(value) {
       this.selected = this.options.findIndex(option => option.value == value);
     },
@@ -91,25 +165,27 @@ export default {
     }
   },
   created() {
-    let selected = -1
+    let selected = -1;
     this.options = this.$slots.default.reduce((accumulator, node) => {
       if (node.tag === 'option') {
-        const attrs = node.data.domProps || node.data.attrs || null
+        const attrs = node.data.domProps || node.data.attrs || null;
         accumulator.push({
           index: accumulator.length,
           label: (node.children && node.children[0].text) || '',
           value: attrs && attrs.value
-        })
+        });
 
         if (attrs && attrs.selected) {
-          selected = accumulator.length - 1
+          selected = accumulator.length - 1;
         }
       }
-      return accumulator
-    }, [])
-    if (selected != -1) { this.selectOption(selected) }
+      return accumulator;
+    }, []);
+    if (selected != -1) {
+      this.selectOption(selected);
+    }
   }
-}
+};
 </script>
 
 <style lang="stylus">
@@ -118,7 +194,7 @@ export default {
   overflow-y: scroll;
 }
 
-.ui-select>.ui-button {
+.ui-select > .ui-button {
   width: 100%;
   text-align: left;
 }
@@ -133,5 +209,14 @@ export default {
   min-width: 0;
   position: absolute;
   z-index: 1000
+}
+
+label.ui-label.unsearchable {
+  opacity: 0;
+  margin: 0;
+  .ui-input {
+    margin: 0;
+    max-height: 0;
+  }
 }
 </style>
